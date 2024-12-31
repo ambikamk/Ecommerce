@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center">Your Wishlist</h1>
+    <div class="container">
+        {% if wishlist_items %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in wishlist_items %}
+                <tr>
+                    <td>
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: contain;">
+                        <p>{{ item.product.name }}</p>
+                    </td>
+                    <td>${{ item.product.price }}</td>
+                    <td>
+                        <a href="{% url 'remove_from_wishlist' item.id %}" class="btn btn-danger">Remove</a>
+                        <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-primary">Add to Cart</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Your wishlist is empty!</p>
+        {% endif %}
+    </div>
+{% endblock %}

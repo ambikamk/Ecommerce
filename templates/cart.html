@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    {% load static %}
+    <h1 class="text-center">Your Cart</h1>
+    <div class="container">
+        {% if cart_items %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail cart-image">
+                        <p>{{ item.product.name }}</p>
+                    </td>
+                    <td>${{ item.product.price }}</td>
+                    <td>
+                        <div class="quantity-control">
+                            <a href="{% url 'decrement_quantity' item.id %}" class="btn btn-secondary btn-sm">-</a>
+                            <span class="quantity">{{ item.quantity }}</span>
+                            <a href="{% url 'increment_quantity' item.id %}" class="btn btn-secondary btn-sm">+</a>
+                        </div>
+                    </td>
+                    <td><a href="{% url 'delete_from_cart' item.id %}" class="btn btn-danger">Remove</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Your cart is empty!</p>
+        {% endif %}
+    </div>
+
+    <style>
+        .cart-image {
+            width: 100px;  /* Set a fixed width for the images */
+            height: 100px;  /* Set a fixed height for the images */
+            object-fit: contain;  /* Make sure the full image is visible without cropping */
+            object-position: center;  /* Center the image if it doesn't fully fill the container */
+        }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .quantity {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+
+{% endblock %}
